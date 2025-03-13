@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hack UI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        body { background: black; overflow: hidden; }
+
+        iframe {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none;
+        }
+
+        #open {
+            position: fixed; bottom: 50px; right: 50px;
+            width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: black; font-size: 24px; font-weight: bold;
+            border-radius: 50%; cursor: grab;
+            box-shadow: 0 5px 20px rgba(255, 204, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        #open:hover { transform: scale(1.1); }
+
+        #dialogBox {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 204, 0, 0.1);
+            border: 2px solid rgba(255, 204, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+            padding: 20px; width: 300px; border-radius: 12px;
+            text-align: center; backdrop-filter: blur(15px);
+            opacity: 0; transition: 0.3s;
+        }
+
+        #dialogBox.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        h2 {
+            font-size: 20px; color: #ffcc00; margin-bottom: 10px;
+        }
+
+        .dialog-content {
+            font-size: 18px; font-weight: bold; color: white;
+            margin: 10px 0;
+        }
+
+        #timerText { color: #ffcc00; font-size: 20px; }
+        #periodNumber { color: #ffcc00; font-size: 20px; }
+
+        #resultText {
+            font-size: 24px; font-weight: bold;
+            animation: flash 0.8s infinite alternate;
+        }
+
+        .big { color: #00ff00; }
+        .small { color: #ff4444; }
+
+        @keyframes flash { from { opacity: 1; } to { opacity: 0.5; } }
+
+        #closeBtn {
+            margin-top: 15px; padding: 10px;
+            background: #ff4444; color: white;
+            font-size: 16px; font-weight: bold;
+            width: 100%; border-radius: 8px;
+            border: none; cursor: pointer;
+        }
+
+        #telegramBtn {
+            display: block; margin-top: 15px; padding: 10px;
+            background: #ffcc00; color: black;
+            font-size: 16px; font-weight: bold;
+            text-decoration: none; border-radius: 8px;
+        }
+
+        .important { font-size: 14px; color: #ffcc00; margin-top: 10px; }
+
+        #copyright {
+            font-size: 10px; text-align: center; color: white;
+            position: fixed; bottom: 5px; width: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <iframe src="https://rajaluck.com/#/register?invitationCode=dTlqf53477"></iframe>
+
+    <button id="open">☣️</button>
+
+    <div id="dialogBox">
+        <h2>🔐 Hack Panel</h2>
+        <p class="dialog-content">⏳ Timer: <span id="timerText"></span></p>
+        <p class="dialog-content">Period: <span id="periodNumber"></span></p>
+        <p class="dialog-content">🔮 Prediction: <span id="resultText"></span></p>
+
+        <a id="telegramBtn" href="https://telegram.me/Rocky_Rolex01" target="_blank">Join Telegram</a>
+
+        <p class="important">⚠️Reacharge your new account for Active hack!</p>
+
+        <button id="closeBtn">Close</button>
+    </div>
+
+    <script>
+        let openBtn = document.getElementById("open");
+        let dialogBox = document.getElementById("dialogBox");
+        let closeBtn = document.getElementById("closeBtn");
+
+        openBtn.onclick = () => { dialogBox.classList.add("show"); };
+        closeBtn.onclick = () => { dialogBox.classList.remove("show"); };
+
+        function updatePeriodAndTimer() {
+            let now = new Date();
+            let year = now.getUTCFullYear();
+            let month = String(now.getUTCMonth() + 1).padStart(2, '0');
+            let day = String(now.getUTCDate()).padStart(2, '0');
+            let hours = now.getUTCHours();
+            let minutes = now.getUTCMinutes();
+            let totalMinutes = hours * 60 + minutes;
+
+            let periodNum = `${year}${month}${day}1000${10001 + totalMinutes}`;
+            document.getElementById("periodNumber").innerText = periodNum;
+
+            let lastTwoDigits = periodNum.slice(-2);
+            let sum = [...lastTwoDigits].reduce((a, b) => a + parseInt(b), 0);
+            if (sum > 9) sum = [...String(sum)].reduce((a, b) => a + parseInt(b), 0);
+
+            let result = sum >= 5 ? "Creat Account" : "Register first";
+            document.getElementById("resultText").innerHTML = `<span class="${sum >= 5 ? 'big' : 'small'}">${result}</span>`;
+
+            let seconds = now.getUTCSeconds();
+            let remainingSeconds = 60 - seconds;
+            document.getElementById("timerText").innerText = `00:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        setInterval(updatePeriodAndTimer, 1000);
+        updatePeriodAndTimer();
+
+        // Floating Button Dragging
+        let drag = false, offsetX, offsetY;
+        openBtn.addEventListener("mousedown", (e) => {
+            drag = true;
+            offsetX = e.clientX - openBtn.getBoundingClientRect().left;
+            offsetY = e.clientY - openBtn.getBoundingClientRect().top;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (drag) {
+                openBtn.style.left = `${e.clientX - offsetX}px`;
+                openBtn.style.top = `${e.clientY - offsetY}px`;
+            }
+        });
+
+        document.addEventListener("mouseup", () => { drag = false; });
+
+        setTimeout(() => {
+            let encoded = atob("Q29weXJpZ2h0ZWQgYnkgQXBrTW9kZGVyS2luZw==");
+            document.body.insertAdjacentHTML("beforeend", `<p id="copyright">${encoded}</p>`);
+        }, 1000);
+    </script>
+
+</body>
+</html>
